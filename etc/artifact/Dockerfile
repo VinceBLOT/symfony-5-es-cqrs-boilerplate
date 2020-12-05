@@ -1,8 +1,8 @@
-ARG PHP_VERION=7.4.3
+ARG PHP_VERION=8.0.0
 
 FROM jorge07/alpine-php:${PHP_VERION}-dev as php-dev
 
-ENV PHP_INI_DIR /etc/php7
+ENV PHP_INI_DIR /etc/php8
 
 RUN apk add -U sqlite \
 	&& version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
@@ -19,8 +19,8 @@ RUN apk add -U sqlite \
     && apk add --no-cache php-dev g++ autoconf make pcre2-dev \
     && pecl install pcov \
     && apk del --no-cache php-dev g++ autoconf make pcre2-dev \
-    && echo "extension=pcov.so" >> /etc/php7/php.ini \
-    && echo "pcov.enabled=0" >> /etc/php7/php.ini
+    && echo "extension=pcov.so" >> $PHP_INI_DIR/php.ini \
+    && echo "pcov.enabled=0" >> $PHP_INI_DIR/php.ini
 
 FROM jorge07/alpine-php:${PHP_VERION}-dev as builder
 
